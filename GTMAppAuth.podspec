@@ -27,22 +27,35 @@ requests with AppAuth.
 
   s.source       = { :git => "https://github.com/google/GTMAppAuth.git", :tag => s.version }
 
-  s.source_files = "Source/*.{h,m}"
   s.requires_arc = true
 
-  s.ios.source_files = "Source/GTMOAuth2KeychainCompatibility/*.{h,m}",
-                       "Source/iOS/**/*.{h,m}"
+  s.default_subspec = "Core"
+
+  s.subspec "Core" do |core|
+    core.source_files = "Source/*.{h,m}"
+    core.ios.source_files = "Source/GTMOAuth2KeychainCompatibility/*.{h,m}", "Source/iOS/**/*.{h,m}"
+    core.osx.source_files = "Source/GTMOAuth2KeychainCompatibility/*.{h,m}", "Source/macOS/**/*.{h,m}"
+    core.tvos.source_files = "Source/iOS/GTMKeychain_iOS.m"
+    core.dependency 'GTMSessionFetcher', '~> 1.1'
+    core.dependency 'AppAuth', '~> 0.9.0'
+  end
+
+  s.subspec "AppExtension" do |ext|
+    ext.source_files = "Source/*.{h,m}"
+    ext.ios.source_files = "Source/GTMOAuth2KeychainCompatibility/*.{h,m}", "Source/iOS/**/*.{h,m}"
+    ext.osx.source_files = "Source/GTMOAuth2KeychainCompatibility/*.{h,m}", "Source/macOS/**/*.{h,m}"
+    ext.tvos.source_files = "Source/iOS/GTMKeychain_iOS.m"
+    ext.dependency 'GTMSessionFetcher', '~> 1.1'
+    ext.dependency 'AppAuth/AppExtension', '~> 0.9.0'
+  end
+
+
   s.ios.deployment_target = "7.0"
   s.ios.framework    = "SafariServices"
 
-  s.osx.source_files = "Source/GTMOAuth2KeychainCompatibility/*.{h,m}",
-                       "Source/macOS/**/*.{h,m}"
   s.osx.deployment_target = '10.8'
 
-  s.tvos.source_files = "Source/iOS/GTMKeychain_iOS.m"
   s.tvos.deployment_target = '9.0'
 
   s.frameworks = 'Security', 'SystemConfiguration'
-  s.dependency 'GTMSessionFetcher', '~> 1.1'
-  s.dependency 'AppAuth', '~> 0.9.0'
 end
