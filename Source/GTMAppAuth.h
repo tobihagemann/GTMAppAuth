@@ -1,7 +1,7 @@
 /*! @file GTMAppAuth.h
     @brief GTMAppAuth SDK
     @copyright
-        Copyright 2016 Google Inc. All Rights Reserved.
+        Copyright 2016 Google Inc.
     @copydetails
         Licensed under the Apache License, Version 2.0 (the "License");
         you may not use this file except in compliance with the License.
@@ -18,6 +18,9 @@
 
 #import "GTMAppAuthFetcherAuthorization.h"
 #import "GTMAppAuthFetcherAuthorization+Keychain.h"
+#import "GTMTVAuthorizationRequest.h"
+#import "GTMTVAuthorizationResponse.h"
+#import "GTMTVAuthorizationService.h"
 
 #if TARGET_OS_TV
 #elif TARGET_OS_WATCH
