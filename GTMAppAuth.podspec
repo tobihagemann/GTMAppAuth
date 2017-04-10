@@ -44,7 +44,7 @@ requests with AppAuth.
     ext.ios.source_files = "Source/GTMOAuth2KeychainCompatibility/*.{h,m}", "Source/iOS/**/*.{h,m}"
     ext.osx.source_files = "Source/GTMOAuth2KeychainCompatibility/*.{h,m}", "Source/macOS/**/*.{h,m}"
     ext.tvos.source_files = "Source/iOS/GTMKeychain_iOS.m"
-    ext.dependency 'GTMSessionFetcher/AppExtension', '~> 1.1'
+    ext.dependency 'GTMSessionFetcher', '~> 1.1'
     ext.dependency 'AppAuth/AppExtension', '~> 0.7.0'
   end
 
