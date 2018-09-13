@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "GTMAppAuth"
-  s.version      = "0.6.1"
+  s.version      = "0.7.0"
   s.summary      = "Authorize GTM Session Fetcher requests with AppAuth via GTMAppAuth"
 
   s.description  = <<-DESC
@@ -17,7 +17,7 @@ requests with AppAuth.
   #       obtaining authorization from the user. You can use the classes of
   #       GTMAppAuth with tokens obtained out of band to authorize requests
   #       on tvOS.
-  s.platforms    = { :ios => "7.0", :osx => "10.8", :tvos => "9.0" }
+  s.platforms    = { :ios => "7.0", :osx => "10.9", :tvos => "9.0" }
 
   s.homepage     = "https://github.com/google/GTMAppAuth"
   s.license      = "Apache License, Version 2.0"
@@ -37,7 +37,7 @@ requests with AppAuth.
     core.osx.source_files = "Source/GTMOAuth2KeychainCompatibility/*.{h,m}", "Source/macOS/**/*.{h,m}"
     core.tvos.source_files = "Source/iOS/GTMKeychain_iOS.m"
     core.dependency 'GTMSessionFetcher', '~> 1.1'
-    core.dependency 'AppAuth', '~> 0.9.0'
+    core.dependency 'AppAuth', '~> 0.92.0'
   end
 
   s.subspec "AppExtension" do |ext|
@@ -46,14 +46,14 @@ requests with AppAuth.
     ext.osx.source_files = "Source/GTMOAuth2KeychainCompatibility/*.{h,m}", "Source/macOS/**/*.{h,m}"
     ext.tvos.source_files = "Source/iOS/GTMKeychain_iOS.m"
     ext.dependency 'GTMSessionFetcher', '~> 1.1'
-    ext.dependency 'AppAuth/AppExtension', '~> 0.9.0'
+    ext.dependency 'AppAuth/AppExtension', '~> 0.92.0'
   end
 
 
   s.ios.deployment_target = "7.0"
   s.ios.framework    = "SafariServices"
 
-  s.osx.deployment_target = '10.8'
+  s.osx.deployment_target = '10.9'
 
   s.tvos.deployment_target = '9.0'
 
