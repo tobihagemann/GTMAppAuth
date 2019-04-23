@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "GTMAppAuth"
-  s.version      = "0.7.0"
+  s.version      = "0.7.1"
   s.summary      = "Authorize GTM Session Fetcher requests with AppAuth via GTMAppAuth"
 
   s.description  = <<-DESC
@@ -37,7 +37,7 @@ requests with AppAuth.
     core.osx.source_files = "Source/GTMOAuth2KeychainCompatibility/*.{h,m}", "Source/macOS/**/*.{h,m}"
     core.tvos.source_files = "Source/iOS/GTMKeychain_iOS.m"
     core.dependency 'GTMSessionFetcher', '~> 1.1'
-    core.dependency 'AppAuth', '~> 0.92.0'
+    core.dependency 'AppAuth', '~> 0.95'
   end
 
   s.subspec "AppExtension" do |ext|
@@ -46,7 +46,7 @@ requests with AppAuth.
     ext.osx.source_files = "Source/GTMOAuth2KeychainCompatibility/*.{h,m}", "Source/macOS/**/*.{h,m}"
     ext.tvos.source_files = "Source/iOS/GTMKeychain_iOS.m"
     ext.dependency 'GTMSessionFetcher', '~> 1.1'
-    ext.dependency 'AppAuth/AppExtension', '~> 0.92.0'
+    ext.dependency 'AppAuth/AppExtension', '~> 0.95'
   end
 
 
