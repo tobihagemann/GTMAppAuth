@@ -18,7 +18,12 @@
 
 #import "GTMOAuth2KeychainCompatibility.h"
 
-#import "AppAuth.h"
+#ifndef GTMAPPAUTH_USER_IMPORTS
+#import <AppAuth/AppAuthCore.h>
+#else // GTMAPPAUTH_USER_IMPORTS
+#import "AppAuthCore.h"
+#endif // GTMAPPAUTH_USER_IMPORTS
+
 #import "GTMKeychain.h"
 
 // standard OAuth keys
@@ -43,8 +48,6 @@ static NSString *const kUserEmailIsVerifiedKey = @"isVerified";
 // https://developers.google.com/identity/protocols/OAuth2InstalledApp#formingtheurl
 //
 static NSString *const kOOBString = @"urn:ietf:wg:oauth:2.0:oob";
-
-static NSString *const kGTMOAuth2ServiceProviderGoogle = @"Google";
 
 @implementation GTMOAuth2KeychainCompatibility
 
@@ -71,11 +74,10 @@ static NSString *const kGTMOAuth2ServiceProviderGoogle = @"Google";
 }
 
 + (GTMAppAuthFetcherAuthorization *)authorizeFromKeychainForName:(NSString *)keychainItemName
-    serviceProvider:(nullable NSString *)serviceProvider
-           tokenURL:(NSURL *)tokenURL
-        redirectURI:(NSString *)redirectURI
-           clientID:(NSString *)clientID
-       clientSecret:(nullable NSString *)clientSecret {
+        tokenURL:(NSURL *)tokenURL
+     redirectURI:(NSString *)redirectURI
+        clientID:(NSString *)clientID
+    clientSecret:(nullable NSString *)clientSecret {
   // Loads password string from keychain.
   NSString *password = [GTMKeychain passwordFromKeychainForName:keychainItemName];
 
@@ -85,7 +87,6 @@ static NSString *const kGTMOAuth2ServiceProviderGoogle = @"Google";
 
   GTMAppAuthFetcherAuthorization *authorization =
       [self authorizeFromPersistenceString:password
-                           serviceProvider:serviceProvider
                                   tokenURL:tokenURL
                                redirectURI:redirectURI
                                   clientID:clientID
@@ -94,11 +95,10 @@ static NSString *const kGTMOAuth2ServiceProviderGoogle = @"Google";
 }
 
 + (GTMAppAuthFetcherAuthorization *)authorizeFromPersistenceString:(NSString *)persistenceString
-                               serviceProvider:(NSString *)serviceProvider
-                                      tokenURL:(NSURL *)tokenURL
-                                   redirectURI:(NSString *)redirectURIString
-                                      clientID:(NSString *)clientID
-                                  clientSecret:(NSString *)clientSecret {
+        tokenURL:(NSURL *)tokenURL
+     redirectURI:(NSString *)redirectURIString
+        clientID:(NSString *)clientID
+    clientSecret:(NSString *)clientSecret {
   // Parses persistence data into NSDictionary.
   NSDictionary *dict = [self dictionaryWithResponseString:persistenceString];
 
@@ -114,14 +114,19 @@ static NSString *const kGTMOAuth2ServiceProviderGoogle = @"Google";
                                                 clientSecret:clientSecret
                                                        scope:dict[kOAuth2ScopeKey]
                                                  redirectURL:redirectURI
-                                                responseType:@"token"
+                                                responseType:OIDResponseTypeCode
                                                        state:nil
+                                                       nonce:nil
                                                 codeVerifier:nil
                                                codeChallenge:nil
                                          codeChallengeMethod:nil
                                         additionalParameters:nil];
   OIDAuthorizationResponse *authResponse =
       [[OIDAuthorizationResponse alloc] initWithRequest:authRequest parameters:dict];
+  // Exclude scope and refresh token parameters from additionalParameters.
+  NSMutableDictionary *additionalParameters = [dict mutableCopy];
+  [additionalParameters removeObjectForKey:kOAuth2ScopeKey];
+  [additionalParameters removeObjectForKey:kOAuth2RefreshTokenKey];
   OIDTokenRequest *tokenRequest =
       [[OIDTokenRequest alloc] initWithConfiguration:authConfig
                                            grantType:@"token"
@@ -132,7 +137,7 @@ static NSString *const kGTMOAuth2ServiceProviderGoogle = @"Google";
                                                scope:dict[kOAuth2ScopeKey]
                                         refreshToken:dict[kOAuth2RefreshTokenKey]
                                         codeVerifier:nil
-                                additionalParameters:dict];
+                                additionalParameters:additionalParameters];
   OIDTokenResponse *tokenResponse =
       [[OIDTokenResponse alloc] initWithRequest:tokenRequest parameters:dict];
   OIDAuthState *authState = [[OIDAuthState alloc] initWithAuthorizationResponse:authResponse
@@ -160,7 +165,6 @@ static NSString *const kGTMOAuth2ServiceProviderGoogle = @"Google";
 
   GTMAppAuthFetcherAuthorization *auth;
   auth = [self authorizeFromKeychainForName:keychainItemName
-                            serviceProvider:kGTMOAuth2ServiceProviderGoogle
                                    tokenURL:tokenURL
                                 redirectURI:redirectURI
                                    clientID:clientID

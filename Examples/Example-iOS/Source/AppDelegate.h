@@ -1,5 +1,5 @@
 /*! @file AppDelegate.h
-    @brief GTMAppAuth tvOS SDK Example
+    @brief GTMAppAuth SDK iOS Example
     @copyright
         Copyright 2016 Google Inc.
     @copydetails
@@ -15,12 +15,21 @@
         See the License for the specific language governing permissions and
         limitations under the License.
  */
-
 #import <UIKit/UIKit.h>
 
+@protocol OIDExternalUserAgentSession;
+
+/*! @brief The example application's delegate.
+*/
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
-@property (strong, nonatomic) UIWindow *window;
+/*! @brief The authorization flow session which receives the return URL from
+       \SFSafariViewController.
+    @discussion We need to store this in the app delegate as it's that delegate which receives the
+        incoming URL on UIApplicationDelegate.application:openURL:options:. This property will be
+        nil, except when an authorization flow is in progress.
+ */
+@property(nonatomic, strong, nullable) id<OIDExternalUserAgentSession> currentAuthorizationFlow;
 
 @end
 

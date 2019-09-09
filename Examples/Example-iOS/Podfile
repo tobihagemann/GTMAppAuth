@@ -2,9 +2,10 @@ target 'Example-iOS' do
   platform :ios, '8.0'
 
   # Pods for GTMAppAuth development
-  pod 'GTMAppAuth', :path => '../'
+  pod 'GTMAppAuth', :path => '../../'
 
   # In production, you would use:
   # pod 'GTMAppAuth'
 
+  pod 'AppAuth', '~> 1.0'
 end
